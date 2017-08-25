@@ -5,6 +5,7 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import App from './App';
 import store from './store';
+
 /* eslint-disable react/jsx-filename-extension */
 
 const Root = (
