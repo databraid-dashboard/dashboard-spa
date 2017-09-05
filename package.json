@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@databraid/github-widget": "1.0.5",
+    "@databraid/github-widget": "1.0.14",
     "@databraid/slack-widget": "1.0.3",
     "@databraid/transit-widget": "1.0.16",
     "prop-types": "15.5.10",

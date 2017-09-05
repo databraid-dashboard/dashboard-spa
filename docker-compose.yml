@@ -8,6 +8,10 @@ services:
       - 8000:8000
     environment:
       - PORT=8000
+    volumes:
+      - ./.env.slack:/app/.env
+      - ./google-credentials:/app/google-credentials
+
     depends_on:
       - postgres
 
@@ -15,6 +19,8 @@ services:
     image: databraiddb/transit-api:latest
     ports:
       - 8001:8000
+    volumes:
+      - ./.env.transit:/app/.env
     environment:
       - PORT=8000
 
