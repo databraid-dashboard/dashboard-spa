@@ -25,4 +25,3 @@ export function showDashboardSidebar() {
 export function hideDashboardSidebar() {
   return { type: HIDE_DASHBOARD_SIDEBAR };
 }
-
