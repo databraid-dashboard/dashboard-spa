@@ -13,7 +13,7 @@ import {
   hideAddWidgetModal,
 } from '../../actions';
 
-const ModalAddWidget = props => (
+export const AddWidgetModal = props => (
   <Modal basic size="small" open={props.showAddWidgetModal}>
     <Header icon="new pied piper" content="Choose a widget" />
     <Modal.Content>
@@ -59,14 +59,14 @@ const ModalAddWidget = props => (
   </Modal>
 );
 
-ModalAddWidget.propTypes = {
+AddWidgetModal.propTypes = {
   showAddWidgetModal: PropTypes.bool.isRequired,
   ids: PropTypes.arrayOf(PropTypes.string).isRequired,
   addWidget: PropTypes.func.isRequired,
   hideAddWidgetModal: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const showAddWidgetModal = state.widgets.showAddWidgetModal;
   const ids = state.widgets.ids;
   return { showAddWidgetModal, ids };
@@ -82,4 +82,4 @@ dispatch);
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ModalAddWidget);
+)(AddWidgetModal);
