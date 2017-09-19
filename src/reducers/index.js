@@ -50,9 +50,78 @@ export const collapseWidgetSidebars = (metadata) => {
   return newMetadata;
 };
 
+
+const isYOverlap = (newY, newW, widgetY, widgetW) => {
+  const y1 = (
+    widgetY >= newY &&
+    widgetY <= (newY + newW) - 1
+  );
+  const y2 = (
+    (widgetY + widgetW) - 1 >= newY &&
+    (widgetY + widgetW) - 1 <= (newY + newW) - 1
+  );
+  const y3 = (
+    newY >= widgetY &&
+    newY <= (widgetY + widgetW) - 1
+  );
+  const y4 = (
+    (newY + newW) - 1 >= widgetY &&
+    (newY + newW) - 1 <= (widgetY + widgetW) - 1
+  );
+
+  return y1 || y2 || y3 || y4;
+};
+
+export const isValidLocation = (layout, x, y, w, h) => {
+  for (let i = 0; i < layout.length; i += 1) {
+    const x1 = (
+      layout[i].x >= x &&
+      layout[i].x <= (x + h) - 1 &&
+      isYOverlap(y, w, layout[i].y, layout[i].w)
+    );
+    const x2 = (
+      (layout[i].x + layout[i].h) - 1 >= x &&
+      (layout[i].x + layout[i].h) - 1 <= (x + h) - 1 &&
+      isYOverlap(y, w, layout[i].y, layout[i].w)
+    );
+    const x3 = (
+      x >= layout[i].x &&
+      x <= (layout[i].x + layout[i].h) - 1 &&
+      isYOverlap(y, w, layout[i].y, layout[i].w)
+    );
+    const x4 = (
+      (x + h) - 1 >= layout[i].x &&
+      (x + h) - 1 <= (layout[i].x + layout[i].h) - 1 &&
+      isYOverlap(y, w, layout[i].y, layout[i].w)
+    );
+
+    if (x1 || x2 || x3 || x4) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+export const calculateInitialPosition = (layout, width, height, maxCols = 12) => {
+  if (width > maxCols) {
+    return null;
+  }
+  for (let x = 0; x < 1000; x += 1) { // hardcoded upper limit to avoid unlikely infinite loop
+    for (let y = 0; y <= maxCols - width; y += 1) {
+      if (isValidLocation(layout, x, y, width, height, maxCols)) {
+        return { x, y };
+      }
+    }
+  }
+  return null;
+};
+
+
 export const widgets = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_WIDGET:
+    case ADD_WIDGET: {
+      const newLoc = calculateInitialPosition(state.grid.layout, 6, 8);
       if (action.id === TRANSIT_WIDGET_ID && !state.ids.includes(TRANSIT_WIDGET_ID)) {
         return {
           ...state,
@@ -62,7 +131,7 @@ export const widgets = (state = initialState, action) => {
             ...state.grid,
             layout: [
               ...state.grid.layout,
-              { i: TRANSIT_WIDGET_ID, x: 0, y: 0, w: 6, h: 8, static: false },
+              { i: TRANSIT_WIDGET_ID, x: newLoc.x, y: newLoc.y, w: 6, h: 8, static: false },
             ],
           },
           metadata: {
@@ -86,7 +155,7 @@ export const widgets = (state = initialState, action) => {
             ...state.grid,
             layout: [
               ...state.grid.layout,
-              { i: GITHUB_WIDGET_ID, x: 6, y: 0, w: 6, h: 8, static: false },
+              { i: GITHUB_WIDGET_ID, x: newLoc.x, y: newLoc.y, w: 6, h: 8, static: false },
             ],
           },
           metadata: {
@@ -110,7 +179,7 @@ export const widgets = (state = initialState, action) => {
             ...state.grid,
             layout: [
               ...state.grid.layout,
-              { i: SLACK_WIDGET_ID, x: 0, y: 8, w: 6, h: 6, static: false },
+              { i: SLACK_WIDGET_ID, x: newLoc.x, y: newLoc.y, w: 6, h: 8, static: false },
             ],
           },
           metadata: {
@@ -130,6 +199,7 @@ export const widgets = (state = initialState, action) => {
         ...state,
         showAddWidgetModal: false,
       };
+    }
 
     case REMOVE_WIDGET: {
       const newIds = [...state.ids];
