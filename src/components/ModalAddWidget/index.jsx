@@ -15,10 +15,10 @@ import {
 } from '../../actions';
 
 export const AddWidgetModal = props => (
-  <Modal basic size="small" open={props.showAddWidgetModal}>
+  <Modal basic open={props.showAddWidgetModal} onClose={props.hideAddWidgetModal}>
     <Header icon="new pied piper" content="Choose a widget" />
     <Modal.Content>
-      <p>You may only display one of each widget at this time.</p>
+      <p>Please pick the widget you wish to display.</p>
     </Modal.Content>
     <Modal.Actions>
       <Button
