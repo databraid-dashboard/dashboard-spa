@@ -19,14 +19,21 @@ describe('App component', () => {
     const showAddWidgetModal = jest.fn();
     const showDashboardSidebar = jest.fn();
     const hideDashboardSidebar = jest.fn();
+    const lockDashboard = jest.fn();
+    const unlockDashboard = jest.fn();
+    const saveLayoutChange = jest.fn();
     const component = shallow(
       <AppComponent
         showAddWidgetModal={showAddWidgetModal}
         showDashboardSidebar={showDashboardSidebar}
         hideDashboardSidebar={hideDashboardSidebar}
+        lockDashboard={lockDashboard}
+        unlockDashboard={unlockDashboard}
+        saveLayoutChange={saveLayoutChange}
         ids={['github']}
         showSidebar={true}
         layout={[{ i: 'slack', x: 0, y: 8, w: 6, h: 8, static: true }]}
+        locked={false}
       />,
     );
     expect(toJson(component)).toMatchSnapshot();
@@ -52,14 +59,21 @@ describe('App component', () => {
     const showAddWidgetModal = jest.fn();
     const showDashboardSidebar = jest.fn();
     const hideDashboardSidebar = jest.fn();
+    const lockDashboard = jest.fn();
+    const unlockDashboard = jest.fn();
+    const saveLayoutChange = jest.fn();
     const component = shallow(
       <AppComponent
         showAddWidgetModal={showAddWidgetModal}
         showDashboardSidebar={showDashboardSidebar}
         hideDashboardSidebar={hideDashboardSidebar}
+        lockDashboard={lockDashboard}
+        unlockDashboard={unlockDashboard}
+        saveLayoutChange={saveLayoutChange}
         ids={['github']}
         showSidebar={true}
         layout={[{ i: 'slack', x: 0, y: 8, w: 6, h: 8, static: true }]}
+        locked={false}
       />,
     );
     expect(component.find('.page-container').exists()).toBe(true);

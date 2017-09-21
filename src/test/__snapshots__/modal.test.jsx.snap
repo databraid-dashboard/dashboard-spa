@@ -32,7 +32,22 @@ exports[`AddWidgetModal component should render a component with props as specif
         name="rocket"
         size="large"
       />
-      Transit
+      transit
+    </Button>
+    <Button
+      as="button"
+      basic={true}
+      color="blue"
+      disabled={false}
+      inverted={true}
+      onClick={[Function]}
+    >
+      <Icon
+        as="i"
+        name="table"
+        size="large"
+      />
+      Sheets
     </Button>
     <Button
       as="button"
@@ -47,7 +62,7 @@ exports[`AddWidgetModal component should render a component with props as specif
         name="github"
         size="large"
       />
-       GitHub
+      github
     </Button>
     <Button
       as="button"
@@ -62,7 +77,22 @@ exports[`AddWidgetModal component should render a component with props as specif
         name="slack"
         size="large"
       />
-       Slack
+      slack
+    </Button>
+    <Button
+      as="button"
+      basic={true}
+      color="blue"
+      disabled={false}
+      inverted={true}
+      onClick={[Function]}
+    >
+      <Icon
+        as="i"
+        name="table"
+        size="large"
+      />
+      sheets
     </Button>
     <Button
       as="button"

@@ -11,10 +11,12 @@ import { bindActionCreators } from 'redux';
 import TransitComponent from '@databraid/transit-widget/lib/App';
 import SlackComponent from '@databraid/slack-widget/lib/App';
 import GithubComponent from '@databraid/github-widget/lib/App';
+import SheetsComponent from '@databraid/sheets-widget/lib/App';
 import {
   TRANSIT_WIDGET_ID,
   SLACK_WIDGET_ID,
   GITHUB_WIDGET_ID,
+  SHEETS_WIDGET_ID,
 } from '../../constants';
 import {
   removeWidget,
@@ -32,6 +34,8 @@ const WidgetContainer = (props) => {
     component = <GithubComponent widgetId={props.id} />;
   } else if (props.id === SLACK_WIDGET_ID) {
     component = <SlackComponent widgetId={props.id} />;
+  } else if (props.id === SHEETS_WIDGET_ID) {
+    component = <SheetsComponent widgetId={props.id} />;
   }
 
   return (

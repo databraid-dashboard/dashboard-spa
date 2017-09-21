@@ -43,6 +43,7 @@ exports[`App component should render the App component with props as specified  
         </MenuItem>
         <MenuItem
           name="lock-unlock-dashboard"
+          onClick={[Function]}
         >
           <Icon
             as="i"
@@ -78,6 +79,12 @@ exports[`App component should render the App component with props as specified  
                   "x": 0,
                   "y": 8,
                 },
+              ]
+            }
+            margin={
+              Array [
+                2,
+                2,
               ]
             }
             measureBeforeMount={false}

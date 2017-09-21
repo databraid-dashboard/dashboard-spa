@@ -2,10 +2,12 @@
 export const TRANSIT_WIDGET_ID = 'transit';
 export const SLACK_WIDGET_ID = 'slack';
 export const GITHUB_WIDGET_ID = 'github';
+export const SHEETS_WIDGET_ID = 'sheets';
 // types
 export const TRANSIT_WIDGET = 'transit';
 export const SLACK_WIDGET = 'slack';
 export const GITHUB_WIDGET = 'github';
+export const SHEETS_WIDGET = 'sheets';
 // reducers
 export const ADD_WIDGET = 'ADD_WIDGET';
 export const REMOVE_WIDGET = 'REMOVE_WIDGET';

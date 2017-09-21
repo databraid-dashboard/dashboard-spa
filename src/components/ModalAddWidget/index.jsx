@@ -4,15 +4,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  TRANSIT_WIDGET_ID,
-  SLACK_WIDGET_ID,
-  GITHUB_WIDGET_ID,
-} from '../../constants';
-import {
   addWidget,
   hideAddWidgetModal,
 } from '../../actions';
-
+import widgetConfigs from '../../configurations';
+/* eslint-disable react/no-unused-prop-types */
 export const AddWidgetModal = props => (
   <Modal basic size="small" open={props.showAddWidgetModal}>
     <Header icon="new pied piper" content="Choose a widget" />
@@ -20,33 +16,21 @@ export const AddWidgetModal = props => (
       <p>You may only display one of each widget at this time.</p>
     </Modal.Content>
     <Modal.Actions>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(TRANSIT_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(TRANSIT_WIDGET_ID)}
-      >
-        <Icon name="rocket" size="large" />Transit
-      </Button>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(GITHUB_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(GITHUB_WIDGET_ID)}
-      >
-        <Icon name="github" size="large" /> GitHub
-      </Button>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(SLACK_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(SLACK_WIDGET_ID)}
-      >
-        <Icon name="slack" size="large" /> Slack
-      </Button>
+      {
+        widgetConfigs.map(cfg => (
+          <Button
+            basic
+            color="blue"
+            onClick={() => props.addWidget(cfg.type)}
+            inverted
+            disabled={props.ids.includes(cfg.type)}
+            key={cfg.type}
+          >
+            <Icon name={cfg.icon} size="large" />{cfg.type}
+          </Button>
+        ),
+        )
+      }
       <Button
         basic
         color="red"
