@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@databraid/github-widget": "^1.0.25",
-    "@databraid/sheets-widget": "^1.0.4",
+    "@databraid/sheets-widget": "^1.0.5",
     "@databraid/slack-widget": "^1.0.24",
     "@databraid/transit-widget": "^1.0.26",
     "localforage": "1.5.0",

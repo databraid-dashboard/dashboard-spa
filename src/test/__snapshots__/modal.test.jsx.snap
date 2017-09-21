@@ -6,8 +6,8 @@ exports[`AddWidgetModal component should render a component with props as specif
   closeOnDimmerClick={true}
   closeOnDocumentClick={false}
   dimmer={true}
+  onClose={[Function]}
   open={true}
-  size="small"
 >
   <Header
     content="Choose a widget"
@@ -15,7 +15,7 @@ exports[`AddWidgetModal component should render a component with props as specif
   />
   <ModalContent>
     <p>
-      You may only display one of each widget at this time.
+      Please pick the widget you wish to display.
     </p>
   </ModalContent>
   <ModalActions>
@@ -32,7 +32,7 @@ exports[`AddWidgetModal component should render a component with props as specif
         name="rocket"
         size="large"
       />
-      transit
+      Transit
     </Button>
     <Button
       as="button"
@@ -62,7 +62,7 @@ exports[`AddWidgetModal component should render a component with props as specif
         name="github"
         size="large"
       />
-      github
+       GitHub
     </Button>
     <Button
       as="button"
@@ -77,26 +77,10 @@ exports[`AddWidgetModal component should render a component with props as specif
         name="slack"
         size="large"
       />
-      slack
+       Slack
     </Button>
     <Button
       as="button"
-      basic={true}
-      color="blue"
-      disabled={false}
-      inverted={true}
-      onClick={[Function]}
-    >
-      <Icon
-        as="i"
-        name="table"
-        size="large"
-      />
-      sheets
-    </Button>
-    <Button
-      as="button"
-      basic={true}
       color="red"
       inverted={true}
       onClick={[Function]}
