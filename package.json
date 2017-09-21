@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@databraid/github-widget": "^1.0.21",
+    "@databraid/github-widget": "^1.0.23",
     "@databraid/sheets-widget": "^1.0.5",
     "@databraid/slack-widget": "^1.0.24",
     "@databraid/transit-widget": "^1.0.26",
