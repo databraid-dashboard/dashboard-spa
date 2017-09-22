@@ -46,14 +46,11 @@ export const getWidgetConfigByType = type => {
   if (!type) {
     return undefined;
   }
-  const configurations = widgetConfigs.filter(cfg => cfg.type === type);
-  if (configurations.length === 0) {
-    throw new Error(`Invalid widget type in configurations file - type [${type}] does not exist`);
+  const configuration = widgetConfigs[type];
+  if (!configuration) {
+    throw new Error(`Invalid widget type in configuration file - type [${type}] does not exist`);
   }
-  if (configurations.length > 1) {
-    throw new Error(`Invalid widget type in configurations file - multiple entries of type [${type}]`);
-  }
-  return configurations[0];
+  return configuration;
 };
 
 const isXOverlap = (newX, newW, widgetX, widgetW) => {
@@ -123,7 +120,8 @@ export const calculateInitialPosition = (layout, width, height, maxCols = 12) =>
 };
 
 export const widgets = (state = initialState, action) => {
-
+  console.log('ACTION>>>',action);
+  console.log('STATE>>>', state);
   switch (action.type) {
     case ADD_WIDGET: {
       const widgetConfig = getWidgetConfigByType(action.widgetType);
@@ -135,6 +133,10 @@ export const widgets = (state = initialState, action) => {
       return {
         ...state,
         ids: [...state.ids, state.grid.nextId.toString()],
+        byId: {
+          ...state.byId,
+          [state.grid.nextId.toString()]: widgetConfig.widgetReducer(undefined, action),
+        },
         showAddWidgetModal: false,
         grid: {
           ...state.grid,
@@ -155,7 +157,7 @@ export const widgets = (state = initialState, action) => {
         },
         metadata: {
           ...state.metadata,
-          [state.grid.nextId]: {
+          [state.grid.nextId.toString()]: {
             type: widgetConfig.type,
             showSidebar: false,
           },

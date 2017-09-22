@@ -13,6 +13,7 @@ import {
   addWidget,
   hideAddWidgetModal,
 } from '../../actions';
+import widgetConfigs from '../../configurations';
 
 export const AddWidgetModal = props => (
   <Modal basic open={props.showAddWidgetModal} onClose={props.hideAddWidgetModal}>
@@ -21,6 +22,21 @@ export const AddWidgetModal = props => (
       <p>Please pick the widget you wish to display.</p>
     </Modal.Content>
     <Modal.Actions>
+      {
+        Object.values(widgetConfigs).map(cfg => (
+          <Button
+            basic
+            color="blue"
+            onClick={() => props.addWidget(cfg.type)}
+            inverted
+            disabled={props.ids.includes(cfg.type)}
+            key={cfg.type}
+          >
+            <Icon name={cfg.icon} size="large" />{cfg.displayName}
+          </Button>
+        ),
+        )
+      }
       <Button
         basic
         color="blue"
