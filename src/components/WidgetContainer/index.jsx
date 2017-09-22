@@ -18,7 +18,7 @@ import widgetConfigs from '../../configurations/';
 
 const WidgetContainer = (props) => {
   const WidgetComponent = widgetConfigs[props.type].widgetComponent;
-  let component = <WidgetComponent widgetId={props.id} />;
+  const component = <WidgetComponent widgetId={props.id} />;
 
   return (
     <div className="widget">

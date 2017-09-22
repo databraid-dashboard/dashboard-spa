@@ -13,7 +13,7 @@ import {
 } from '../constants';
 
 export function addWidget(widgetType) {
-  return { type: ADD_WIDGET, widgetType: widgetType };
+  return { type: ADD_WIDGET, widgetType };
 }
 
 export function removeWidget(widgetId) {
@@ -55,5 +55,4 @@ export function unlockDashboard() {
 export function saveLayoutChange(layout) {
   return { type: SAVE_LAYOUT_CHANGE, layout };
 }
-
 

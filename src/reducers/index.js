@@ -30,7 +30,7 @@ const initialState = {
   metadata: {},
 };
 
-export const collapseWidgetSidebars = metadata => {
+export const collapseWidgetSidebars = (metadata) => {
   const newMetadata = { ...metadata };
   Object.keys(newMetadata).forEach((widgetId) => {
     newMetadata[widgetId] = {
@@ -42,7 +42,7 @@ export const collapseWidgetSidebars = metadata => {
 };
 
 
-export const getWidgetConfigByType = type => {
+export const getWidgetConfigByType = (type) => {
   if (!type) {
     return undefined;
   }
@@ -120,8 +120,6 @@ export const calculateInitialPosition = (layout, width, height, maxCols = 12) =>
 };
 
 export const widgets = (state = initialState, action) => {
-  console.log('ACTION>>>',action);
-  console.log('STATE>>>', state);
   switch (action.type) {
     case ADD_WIDGET: {
       const widgetConfig = getWidgetConfigByType(action.widgetType);
@@ -279,12 +277,11 @@ export const widgets = (state = initialState, action) => {
         },
       };
 
-    default:{
-
-      let reducers = {};
-      state.ids.forEach(id => {
+    default: {
+      const reducers = {};
+      state.ids.forEach((id) => {
         const widgetConfig = getWidgetConfigByType(state.metadata[id].type);
-        reducers[id] = widgetConfig.widgetReducer(state.byId[id], action)
+        reducers[id] = widgetConfig.widgetReducer(state.byId[id], action);
       });
       return {
         ...state,
