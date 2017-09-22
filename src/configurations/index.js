@@ -13,7 +13,7 @@ export default [
     initHeight: 8,
     initWidth: 6,
     minHeight: 4,
-    minWidth: 3,
+    minWidth: 6,
   },
   {
     type: 'slack',
