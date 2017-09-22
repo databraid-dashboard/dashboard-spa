@@ -64,11 +64,77 @@ export const getWidgetConfigByType = (type) => {
   return configurations[0];
 };
 
+const isXOverlap = (newX, newW, widgetX, widgetW) => {
+  const x1 = (
+    widgetX >= newX &&
+    widgetX <= (newX + newW) - 1
+  );
+  const x2 = (
+    (widgetX + widgetW) - 1 >= newX &&
+    (widgetX + widgetW) - 1 <= (newX + newW) - 1
+  );
+  const x3 = (
+    newX >= widgetX &&
+    newX <= (widgetX + widgetW) - 1
+  );
+  const x4 = (
+    (newX + newW) - 1 >= widgetX &&
+    (newX + newW) - 1 <= (widgetX + widgetW) - 1
+  );
+
+  return x1 || x2 || x3 || x4;
+};
+
+export const isValidLocation = (layout, x, y, w, h) => {
+  for (let i = 0; i < layout.length; i += 1) {
+    const y1 = (
+      layout[i].y >= y &&
+      layout[i].y <= (y + h) - 1 &&
+      isXOverlap(x, w, layout[i].x, layout[i].w)
+    );
+    const y2 = (
+      (layout[i].y + layout[i].h) - 1 >= y &&
+      (layout[i].y + layout[i].h) - 1 <= (y + h) - 1 &&
+      isXOverlap(x, w, layout[i].x, layout[i].w)
+    );
+    const y3 = (
+      y >= layout[i].y &&
+      y <= (layout[i].y + layout[i].h) - 1 &&
+      isXOverlap(x, w, layout[i].x, layout[i].w)
+    );
+    const y4 = (
+      (y + h) - 1 >= layout[i].y &&
+      (y + h) - 1 <= (layout[i].y + layout[i].h) - 1 &&
+      isXOverlap(x, w, layout[i].x, layout[i].w)
+    );
+
+    if (y1 || y2 || y3 || y4) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+export const calculateInitialPosition = (layout, width, height, maxCols = 12) => {
+  if (width > maxCols) {
+    return null;
+  }
+  for (let y = 0; y < 1000; y += 1) { // hardcoded upper limit to avoid unlikely infinite loop
+    for (let x = 0; x <= maxCols - width; x += 1) {
+      if (isValidLocation(layout, x, y, width, height, maxCols)) {
+        return { x, y };
+      }
+    }
+  }
+  return null;
+};
 
 export const widgets = (state = initialState, action) => {
   switch (action.type) {
     case ADD_WIDGET: {
       const widgetConfig = getWidgetConfigByType(action.id);
+      const newLoc = calculateInitialPosition(state.grid.layout, widgetConfig.initWidth, widgetConfig.initHeight);
       return {
         ...state,
         ids: [...state.ids, widgetConfig.type],
@@ -79,8 +145,8 @@ export const widgets = (state = initialState, action) => {
             ...state.grid.layout,
             {
               i: widgetConfig.type,
-              x: 0,
-              y: 0,
+              x: newLoc.x,
+              y: newLoc.y,
               w: widgetConfig.initWidth,
               h: widgetConfig.initHeight,
               minW: widgetConfig.minWidth,
