@@ -1,20 +1,10 @@
 import { Reducer } from 'redux-testkit';
-import { transit as transitReducer } from '@databraid/transit-widget/lib/reducers';
-import { github as githubReducer } from '@databraid/github-widget/lib/reducers';
-import { sheets as sheetsReducer } from '@databraid/sheets-widget/lib/reducers';
-import { storeReducer as slackReducer } from '@databraid/slack-widget/lib/Reducers';
 import {
   widgets as rootReducer,
   collapseWidgetSidebars,
   calculateInitialPosition,
   isValidLocation,
 } from './index';
-import {
-  TRANSIT_WIDGET_ID,
-  SLACK_WIDGET_ID,
-  GITHUB_WIDGET_ID,
-  SHEETS_WIDGET_ID,
-} from '../constants';
 
 const initialState = {
   ids: [],
@@ -31,15 +21,36 @@ const initialState = {
 };
 
 const stateWithTransit = {
-  byId: {},
+  byId: {
+    1: {
+      alerts: {
+        alerts: {},
+      },
+      configuration: {
+        currentLocation: {
+          address: '44 Tehama St, San Francisco, CA 94105',
+          lat: 37.7873889,
+          lng: -122.3964106,
+        },
+        geolocating: true,
+      },
+      destinations: {
+        byId: {},
+        ids: [],
+      },
+      journeys: {
+        byDestinationId: {},
+      },
+    },
+  },
   showSidebar: true,
-  ids: [TRANSIT_WIDGET_ID],
+  ids: ['1'],
   showAddWidgetModal: false,
   grid: {
-    nextId: 1,
+    nextId: 2,
     layout: [
       {
-        i: TRANSIT_WIDGET_ID,
+        i: '1',
         x: 0,
         y: 0,
         w: 6,
@@ -53,7 +64,7 @@ const stateWithTransit = {
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
   },
   metadata: {
-    transit: {
+    1: {
       type: 'transit',
       showSidebar: false,
     },
@@ -61,15 +72,50 @@ const stateWithTransit = {
 };
 
 const stateWithGithub = {
-  byId: {},
+  byId: {
+    1: {
+      currentPage: {
+        render: 'login',
+        repoName: null,
+        selectedOrgName: null,
+        userName: '',
+      },
+      issues: {
+        ids: [],
+        issuesById: {},
+        loadingIssues: true,
+        repoName: '',
+      },
+      milestones: {
+        ids: [],
+        milestonesById: {},
+        repoName: '',
+      },
+      orgs: {
+        ids: [],
+        orgsById: {},
+      },
+      pullRequests: {
+        ids: [],
+        loadingPrTable: true,
+        prsById: {},
+        repoName: '',
+      },
+      repos: {
+        ids: [],
+        orgName: '',
+        reposById: {},
+      },
+    },
+  },
   showSidebar: true,
-  ids: [GITHUB_WIDGET_ID],
+  ids: ['1'],
   showAddWidgetModal: false,
   grid: {
-    nextId: 1,
+    nextId: 2,
     layout: [
       {
-        i: GITHUB_WIDGET_ID,
+        i: '1',
         x: 0,
         y: 0,
         w: 6,
@@ -83,7 +129,7 @@ const stateWithGithub = {
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
   },
   metadata: {
-    github: {
+    1: {
       type: 'github',
       showSidebar: false,
     },
@@ -91,15 +137,23 @@ const stateWithGithub = {
 };
 
 const stateWithSlack = {
-  byId: {},
+  byId: {
+    1: {
+      channelData: {},
+      isConnectedWithSlack: false,
+      isShowingScores: false,
+      scoreData: {},
+      selectedChannel: null,
+    },
+  },
   showSidebar: true,
-  ids: [SLACK_WIDGET_ID],
+  ids: ['1'],
   showAddWidgetModal: false,
   grid: {
-    nextId: 1,
+    nextId: 2,
     layout: [
       {
-        i: SLACK_WIDGET_ID,
+        i: '1',
         x: 0,
         y: 0,
         w: 4,
@@ -113,7 +167,7 @@ const stateWithSlack = {
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
   },
   metadata: {
-    slack: {
+    1: {
       type: 'slack',
       showSidebar: false,
     },
@@ -125,12 +179,7 @@ describe('rootReducer', () => {
     expect(rootReducer(initialState, {}))
       .toEqual({
         ...initialState,
-        byId: {
-          [TRANSIT_WIDGET_ID]: transitReducer(undefined, {}),
-          [GITHUB_WIDGET_ID]: githubReducer(undefined, {}),
-          [SLACK_WIDGET_ID]: slackReducer(undefined, {}),
-          [SHEETS_WIDGET_ID]: sheetsReducer(undefined, {}),
-        },
+        byId: {},
       });
   });
 
@@ -140,38 +189,33 @@ describe('rootReducer', () => {
       .expect({ type: 'NOT_EXISTING' })
       .toReturnState({
         ...initialState,
-        byId: {
-          [TRANSIT_WIDGET_ID]: transitReducer(undefined, {}),
-          [GITHUB_WIDGET_ID]: githubReducer(undefined, {}),
-          [SLACK_WIDGET_ID]: slackReducer(undefined, {}),
-          [SHEETS_WIDGET_ID]: sheetsReducer(undefined, {}),
-        },
+        byId: {},
       });
   });
 
   it('should add the transit widget to the dashboard', () => {
-    const action = { type: 'ADD_WIDGET', id: 'transit' };
+    const action = { type: 'ADD_WIDGET', widgetType: 'transit' };
     Reducer(rootReducer).withState(initialState).expect(action).toReturnState({
       ...stateWithTransit,
     });
   });
 
   it('should add the github widget to the dashboard', () => {
-    const action = { type: 'ADD_WIDGET', id: 'github' };
+    const action = { type: 'ADD_WIDGET', widgetType: 'github' };
     Reducer(rootReducer).withState(initialState).expect(action).toReturnState({
       ...stateWithGithub,
     });
   });
 
   it('should add the slack widget to the dashboard', () => {
-    const action = { type: 'ADD_WIDGET', id: 'slack' };
+    const action = { type: 'ADD_WIDGET', widgetType: 'slack' };
     Reducer(rootReducer).withState(initialState).expect(action).toReturnState({
       ...stateWithSlack,
     });
   });
 
   it('should remove the transit widget from the dashboard', () => {
-    const action = { type: 'REMOVE_WIDGET', id: 'transit' };
+    const action = { type: 'REMOVE_WIDGET', id: '1' };
     Reducer(rootReducer).withState(stateWithTransit).expect(action).toReturnState({
       ...stateWithTransit,
       ids: [],
@@ -179,7 +223,7 @@ describe('rootReducer', () => {
   });
 
   it('should remove the github widget from the dashboard', () => {
-    const action = { type: 'REMOVE_WIDGET', id: 'github' };
+    const action = { type: 'REMOVE_WIDGET', id: '1' };
     Reducer(rootReducer).withState(stateWithGithub).expect(action).toReturnState({
       ...stateWithGithub,
       ids: [],
@@ -187,7 +231,7 @@ describe('rootReducer', () => {
   });
 
   it('should remove the slack widget from the dashboard', () => {
-    const action = { type: 'REMOVE_WIDGET', id: 'slack' };
+    const action = { type: 'REMOVE_WIDGET', id: '1' };
     Reducer(rootReducer).withState(stateWithSlack).expect(action).toReturnState({
       ...stateWithSlack,
       ids: [],
@@ -388,24 +432,45 @@ describe('rootReducer', () => {
   it('should persist new grid layout to state', () => {
     const action = {
       type: 'SAVE_LAYOUT_CHANGE',
-      layout: [{ i: TRANSIT_WIDGET_ID, x: 2, y: 3, w: 6, h: 8, minH: 4, minW: 4, static: false }],
+      layout: [{ i: '1', x: 2, y: 3, w: 6, h: 8, minH: 4, minW: 4, static: false }],
     };
 
     Reducer(rootReducer).withState(stateWithTransit).expect(action).toReturnState({
-      byId: {},
+      byId: {
+        1: {
+          alerts: {
+            alerts: {},
+          },
+          configuration: {
+            currentLocation: {
+              address: '44 Tehama St, San Francisco, CA 94105',
+              lat: 37.7873889,
+              lng: -122.3964106,
+            },
+            geolocating: true,
+          },
+          destinations: {
+            byId: {},
+            ids: [],
+          },
+          journeys: {
+            byDestinationId: {},
+          },
+        },
+      },
       showSidebar: true,
-      ids: [TRANSIT_WIDGET_ID],
+      ids: ['1'],
       showAddWidgetModal: false,
       grid: {
-        nextId: 1,
+        nextId: 2,
         layout: [
-          { i: TRANSIT_WIDGET_ID, x: 2, y: 3, w: 6, h: 8, minH: 4, minW: 4, static: false },
+          { i: '1', x: 2, y: 3, w: 6, h: 8, minH: 4, minW: 4, static: false },
         ],
         breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
         cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
       },
       metadata: {
-        transit: {
+        1: {
           type: 'transit',
           showSidebar: false,
         },
@@ -462,7 +527,7 @@ const layoutWithOne = [
 describe('non-reducer functions', () => {
   describe('collapseWidgetSidebars', () => {
     it('should return new metadata with all widget sidebars not showing', () => {
-      expect(collapseWidgetSidebars({ transit: {
+      expect(collapseWidgetSidebars({ 1: {
         type: 'transit',
         showSidebar: true,
       },

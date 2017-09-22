@@ -278,14 +278,14 @@ export const widgets = (state = initialState, action) => {
       };
 
     default: {
-      const reducers = {};
+      const newStates = {};
       state.ids.forEach((id) => {
         const widgetConfig = getWidgetConfigByType(state.metadata[id].type);
-        reducers[id] = widgetConfig.widgetReducer(state.byId[id], action);
+        newStates[id] = widgetConfig.widgetReducer(state.byId[id], action);
       });
       return {
         ...state,
-        byId: reducers,
+        byId: newStates,
         showSidebar: state.ids.length === 0,
       };
     }
