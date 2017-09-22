@@ -6,6 +6,8 @@ import { storeReducer as slackReducer } from '@databraid/slack-widget/lib/Reduce
 import {
   widgets as rootReducer,
   collapseWidgetSidebars,
+  calculateInitialPosition,
+  isValidLocation,
 } from './index';
 import {
   TRANSIT_WIDGET_ID,
@@ -73,7 +75,7 @@ const stateWithGithub = {
         w: 6,
         h: 8,
         minH: 4,
-        minW: 3,
+        minW: 6,
         static: false,
       },
     ],
@@ -413,6 +415,50 @@ describe('rootReducer', () => {
 });
 
 
+/*      0   1   2   3   4   5   6   7   8   9   10  11
+ *  0 | x | x | x | x | x | x |   |   | x | x | x | x |
+ *  1 | x | x | x | x | x | x |   |   | x | x | x | x |
+ *  2 | x | x | x | x | x | x |   |   | x | x | x | x |
+ *  3 | x | x | x | x | x | x |   |   | x | x | x | x |
+ *  4 |   |   |   |   |   |   |   |   | x | x | x | x |
+ *  5 |   |   |   |   |   |   |   |   |   |   |   |   |
+ *  6 |   |   |   | x | x | x | x | x | x |   |   |   |
+ *  7 |   |   |   | x | x | x | x | x | x |   |   |   |
+ *  8 |   |   |   | x | x | x | x | x | x |   |   |   |
+ *  9 |   |   |   | x | x | x | x | x | x |   |   |   |
+ * 10 |   |   |   |   |   |   |   |   |   |   |   |   |
+ * 11 |   |   |   |   |   |   |   |   |   |   |   |   |
+ * 12 |   |   |   |   |   |   |   |   |   |   |   |   |
+ * 13 |   |   |   |   |   |   |   |   |   |   |   |   |
+ * 14 |   |   |   |   |   |   |   |   |   |   |   |   |
+ */
+const layoutWithThree = [
+  { i: 'test1', x: 0, y: 0, w: 6, h: 4, static: false },
+  { i: 'test2', x: 0, y: 8, w: 4, h: 5, static: false },
+  { i: 'test3', x: 6, y: 3, w: 6, h: 4, static: false },
+];
+
+/*      0   1   2   3   4   5   6   7   8   9   10  11
+ *  0 |   |   |   |   |   |   |   |   |   |   |   |   |
+ *  1 |   |   |   |   |   |   |   |   |   |   |   |   |
+ *  2 |   |   |   |   |   |   |   |   |   |   |   |   |
+ *  3 |   |   |   |   |   |   |   |   |   |   |   |   |
+ *  4 |   |   |   |   |   |   |   |   |   |   |   |   |
+ *  5 |   |   |   |   |   |   |   |   |   |   |   |   |
+ *  6 |   |   |   | x | x | x | x | x | x |   |   |   |
+ *  7 |   |   |   | x | x | x | x | x | x |   |   |   |
+ *  8 |   |   |   | x | x | x | x | x | x |   |   |   |
+ *  9 |   |   |   | x | x | x | x | x | x |   |   |   |
+ * 10 |   |   |   |   |   |   |   |   |   |   |   |   |
+ * 11 |   |   |   |   |   |   |   |   |   |   |   |   |
+ * 12 |   |   |   |   |   |   |   |   |   |   |   |   |
+ * 13 |   |   |   |   |   |   |   |   |   |   |   |   |
+ * 14 |   |   |   |   |   |   |   |   |   |   |   |   |
+ */
+const layoutWithOne = [
+  { i: 'test', x: 3, y: 6, w: 6, h: 4, static: false },
+];
+
 describe('non-reducer functions', () => {
   describe('collapseWidgetSidebars', () => {
     it('should return new metadata with all widget sidebars not showing', () => {
@@ -421,6 +467,72 @@ describe('non-reducer functions', () => {
         showSidebar: true,
       },
       })).toEqual(stateWithTransit.metadata);
+    });
+  });
+
+  describe('isValidLocation', () => {
+    it('should return false when there exists overlap to the top left', () => {
+      expect(isValidLocation(layoutWithOne, 2, 5, 2, 2)).toEqual(false);
+    });
+    it('should return false when there exists overlap to the top right', () => {
+      expect(isValidLocation(layoutWithOne, 8, 5, 2, 2)).toEqual(false);
+    });
+    it('should return false when there exists overlap to the bottom left', () => {
+      expect(isValidLocation(layoutWithOne, 2, 9, 2, 2)).toEqual(false);
+    });
+    it('should return false when there exists overlap to the bottom right', () => {
+      expect(isValidLocation(layoutWithOne, 8, 9, 2, 2)).toEqual(false);
+    });
+    it('should return false when there exists overlap to the top', () => {
+      expect(isValidLocation(layoutWithOne, 5, 5, 2, 2)).toEqual(false);
+    });
+    it('should return false when there exists overlap to the bottom', () => {
+      expect(isValidLocation(layoutWithOne, 5, 9, 2, 2)).toEqual(false);
+    });
+    it('should return false when there exists overlap to the left', () => {
+      expect(isValidLocation(layoutWithOne, 2, 7, 2, 2)).toEqual(false);
+    });
+    it('should return false when there exists overlap to the right', () => {
+      expect(isValidLocation(layoutWithOne, 8, 7, 2, 2)).toEqual(false);
+    });
+    it('should return true when right against top', () => {
+      expect(isValidLocation(layoutWithOne, 4, 4, 2, 2)).toEqual(true);
+    });
+    it('should return true when right against bottom', () => {
+      expect(isValidLocation(layoutWithOne, 5, 10, 2, 2)).toEqual(true);
+    });
+    it('should return true when right against left', () => {
+      expect(isValidLocation(layoutWithOne, 1, 6, 2, 2)).toEqual(true);
+    });
+    it('should return true when right against right', () => {
+      expect(isValidLocation(layoutWithOne, 9, 7, 2, 2)).toEqual(true);
+    });
+    it('should return true when just off top left corner', () => {
+      expect(isValidLocation(layoutWithOne, 1, 4, 2, 2)).toEqual(true);
+    });
+    it('should return true when just off top right corner', () => {
+      expect(isValidLocation(layoutWithOne, 9, 4, 2, 2)).toEqual(true);
+    });
+    it('should return true when just off bottom left corner', () => {
+      expect(isValidLocation(layoutWithOne, 1, 10, 2, 2)).toEqual(true);
+    });
+    it('should return true when just off bottm right corner', () => {
+      expect(isValidLocation(layoutWithOne, 9, 10, 2, 2)).toEqual(true);
+    });
+    it('should return true when far away', () => {
+      expect(isValidLocation(layoutWithOne, 0, 0, 2, 2)).toEqual(true);
+    });
+  });
+
+  describe('calculateInitialPosition', () => {
+    it('should return false when width is greater than max columns', () => {
+      expect(calculateInitialPosition([], 13, 1, 12)).toEqual(null);
+    });
+    it('should return valid coordinates for 2x2', () => {
+      expect(calculateInitialPosition(layoutWithThree, 2, 2)).toEqual({ x: 6, y: 0 });
+    });
+    it('should return valid coordinates for 3x3', () => {
+      expect(calculateInitialPosition(layoutWithThree, 3, 3)).toEqual({ x: 6, y: 0 });
     });
   });
 });

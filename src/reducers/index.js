@@ -134,7 +134,11 @@ export const widgets = (state = initialState, action) => {
   switch (action.type) {
     case ADD_WIDGET: {
       const widgetConfig = getWidgetConfigByType(action.id);
-      const newLoc = calculateInitialPosition(state.grid.layout, widgetConfig.initWidth, widgetConfig.initHeight);
+      const newLoc = calculateInitialPosition(
+        state.grid.layout,
+        widgetConfig.initWidth,
+        widgetConfig.initHeight,
+      );
       return {
         ...state,
         ids: [...state.ids, widgetConfig.type],
