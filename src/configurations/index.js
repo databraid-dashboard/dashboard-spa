@@ -1,3 +1,8 @@
+import { transit as transitReducer } from '@databraid/transit-widget/lib/reducers';
+import { github as githubReducer } from '@databraid/github-widget/lib/reducers';
+import { storeReducer as slackReducer } from '@databraid/slack-widget/lib/Reducers';
+import { sheets as sheetsReducer } from '@databraid/sheets-widget/lib/reducers';
+
 export default [
   {
     type: 'transit',
@@ -6,6 +11,7 @@ export default [
     initWidth: 6,
     minHeight: 4,
     minWidth: 3,
+    widgetReducer: transitReducer,
   },
   {
     type: 'github',
@@ -13,7 +19,8 @@ export default [
     initHeight: 8,
     initWidth: 6,
     minHeight: 4,
-    minWidth: 6,
+    minWidth: 3,
+    widgetReducer: githubReducer,
   },
   {
     type: 'slack',
@@ -22,6 +29,7 @@ export default [
     initWidth: 4,
     minHeight: 4,
     minWidth: 3,
+    widgetReducer: slackReducer,
   },
   {
     type: 'sheets',
@@ -30,5 +38,6 @@ export default [
     initWidth: 8,
     minHeight: 4,
     minWidth: 3,
+    widgetReducer: sheetsReducer,
   },
 ];
