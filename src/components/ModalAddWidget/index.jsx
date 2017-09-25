@@ -24,7 +24,8 @@ export const AddWidgetModal = props => (
             color="blue"
             onClick={() => props.addWidget(cfg.type)}
             inverted
-            disabled={props.ids.includes(cfg.type)}
+            // disabled={props.ids.includes(cfg.type)}
+            disabled={props.ids.filter(id => props.metadata[id].type === cfg.type).length > 0}
             key={cfg.type}
           >
             <Icon name={cfg.icon} size="large" />{cfg.displayName}
@@ -48,12 +49,17 @@ AddWidgetModal.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string).isRequired,
   addWidget: PropTypes.func.isRequired,
   hideAddWidgetModal: PropTypes.func.isRequired,
+  metadata: PropTypes.shape({
+    type: PropTypes.string,
+    showSidebar:  PropTypes.bool,
+  }),
 };
 
-export const mapStateToProps = (state) => {
+export const mapStateToProps = state => {
   const showAddWidgetModal = state.widgets.showAddWidgetModal;
   const ids = state.widgets.ids;
-  return { showAddWidgetModal, ids };
+  const metadata = state.widgets.metadata;
+  return { showAddWidgetModal, ids, metadata };
 };
 
 export const mapDispatchToProps = dispatch => bindActionCreators({
