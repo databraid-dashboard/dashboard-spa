@@ -10,8 +10,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
   removeWidget,
-  showWidgetSidebar,
-  hideWidgetSidebar,
 } from '../../actions';
 import WidgetSidestrip from '../WidgetSidestrip/';
 import widgetConfigs from '../../configurations/';
@@ -72,8 +70,6 @@ const mapStateToProps = (state, ownProps) => {
 
 export const mapDispatchToProps = dispatch => bindActionCreators({
   removeWidget,
-  showWidgetSidebar,
-  hideWidgetSidebar,
 },
 dispatch);
 
