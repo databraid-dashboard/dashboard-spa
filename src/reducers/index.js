@@ -1,15 +1,7 @@
 import { combineReducers } from 'redux';
-import { sheets as sheetsReducer } from '@databraid/sheets-widget/lib/reducers';
-import { transit as transitReducer } from '@databraid/transit-widget/lib/reducers';
-import { github as githubReducer } from '@databraid/github-widget/lib/reducers';
-import { storeReducer as slackReducer } from '@databraid/slack-widget/lib/Reducers';
 import { REHYDRATE } from 'redux-persist/constants';
 import widgetConfigs from '../configurations/';
 import {
-  TRANSIT_WIDGET_ID,
-  SLACK_WIDGET_ID,
-  GITHUB_WIDGET_ID,
-  SHEETS_WIDGET_ID,
   ADD_WIDGET,
   REMOVE_WIDGET,
   SHOW_ADD_WIDGET_MODAL,
@@ -54,14 +46,11 @@ export const getWidgetConfigByType = (type) => {
   if (!type) {
     return undefined;
   }
-  const configurations = widgetConfigs.filter(cfg => cfg.type === type);
-  if (configurations.length === 0) {
-    throw new Error(`Invalid widget type in configurations file - type [${type}] does not exist`);
+  const configuration = widgetConfigs[type];
+  if (!configuration) {
+    throw new Error(`Invalid widget type in configuration file - type [${type}] does not exist`);
   }
-  if (configurations.length > 1) {
-    throw new Error(`Invalid widget type in configurations file - multiple entries of type [${type}]`);
-  }
-  return configurations[0];
+  return configuration;
 };
 
 const isXOverlap = (newX, newW, widgetX, widgetW) => {
@@ -133,7 +122,7 @@ export const calculateInitialPosition = (layout, width, height, maxCols = 12) =>
 export const widgets = (state = initialState, action) => {
   switch (action.type) {
     case ADD_WIDGET: {
-      const widgetConfig = getWidgetConfigByType(action.id);
+      const widgetConfig = getWidgetConfigByType(action.widgetType);
       const newLoc = calculateInitialPosition(
         state.grid.layout,
         widgetConfig.initWidth,
@@ -141,14 +130,19 @@ export const widgets = (state = initialState, action) => {
       );
       return {
         ...state,
-        ids: [...state.ids, widgetConfig.type],
+        ids: [...state.ids, state.grid.nextId.toString()],
+        byId: {
+          ...state.byId,
+          [state.grid.nextId.toString()]: widgetConfig.widgetReducer(undefined, action),
+        },
         showAddWidgetModal: false,
         grid: {
           ...state.grid,
+          nextId: state.grid.nextId + 1,
           layout: [
             ...state.grid.layout,
             {
-              i: widgetConfig.type,
+              i: state.grid.nextId.toString(),
               x: newLoc.x,
               y: newLoc.y,
               w: widgetConfig.initWidth,
@@ -161,7 +155,7 @@ export const widgets = (state = initialState, action) => {
         },
         metadata: {
           ...state.metadata,
-          [action.id]: {
+          [state.grid.nextId.toString()]: {
             type: widgetConfig.type,
             showSidebar: false,
           },
@@ -283,17 +277,18 @@ export const widgets = (state = initialState, action) => {
         },
       };
 
-    default:
+    default: {
+      const newStates = {};
+      state.ids.forEach((id) => {
+        const widgetConfig = getWidgetConfigByType(state.metadata[id].type);
+        newStates[id] = widgetConfig.widgetReducer(state.byId[id], action);
+      });
       return {
         ...state,
-        byId: {
-          [TRANSIT_WIDGET_ID]: transitReducer(state.byId[TRANSIT_WIDGET_ID], action),
-          [GITHUB_WIDGET_ID]: githubReducer(state.byId[GITHUB_WIDGET_ID], action),
-          [SLACK_WIDGET_ID]: slackReducer(state.byId[SLACK_WIDGET_ID], action),
-          [SHEETS_WIDGET_ID]: sheetsReducer(state.byId[SHEETS_WIDGET_ID], action),
-        },
+        byId: newStates,
         showSidebar: state.ids.length === 0,
       };
+    }
   }
 };
 

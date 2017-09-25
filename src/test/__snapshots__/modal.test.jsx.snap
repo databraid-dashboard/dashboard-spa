@@ -44,10 +44,10 @@ exports[`AddWidgetModal component should render a component with props as specif
     >
       <Icon
         as="i"
-        name="table"
+        name="github"
         size="large"
       />
-      Sheets
+      GitHub
     </Button>
     <Button
       as="button"
@@ -59,25 +59,25 @@ exports[`AddWidgetModal component should render a component with props as specif
     >
       <Icon
         as="i"
-        name="github"
+        name="slack"
         size="large"
       />
-       GitHub
+      Slack
     </Button>
     <Button
       as="button"
       basic={true}
       color="blue"
-      disabled={true}
+      disabled={false}
       inverted={true}
       onClick={[Function]}
     >
       <Icon
         as="i"
-        name="slack"
+        name="table"
         size="large"
       />
-       Slack
+      Sheets
     </Button>
     <Button
       as="button"

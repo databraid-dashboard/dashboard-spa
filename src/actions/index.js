@@ -13,7 +13,7 @@ import {
 } from '../constants';
 
 export function addWidget(widgetType) {
-  return { type: ADD_WIDGET, id: widgetType };
+  return { type: ADD_WIDGET, widgetType };
 }
 
 export function removeWidget(widgetId) {

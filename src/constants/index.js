@@ -1,8 +1,3 @@
-// ids - THESE WILL BE PHASED OUT AS WE MOVE TO DYNAMICALLY GENERATED IDS
-export const TRANSIT_WIDGET_ID = 'transit';
-export const SLACK_WIDGET_ID = 'slack';
-export const GITHUB_WIDGET_ID = 'github';
-export const SHEETS_WIDGET_ID = 'sheets';
 // types
 export const TRANSIT_WIDGET = 'transit';
 export const SLACK_WIDGET = 'slack';

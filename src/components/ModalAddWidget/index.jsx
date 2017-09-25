@@ -4,16 +4,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  TRANSIT_WIDGET_ID,
-  SLACK_WIDGET_ID,
-  GITHUB_WIDGET_ID,
-  SHEETS_WIDGET_ID,
-} from '../../constants';
-import {
   addWidget,
   hideAddWidgetModal,
 } from '../../actions';
+import widgetConfigs from '../../configurations';
 
+/* eslint-disable react/no-unused-prop-types */
 export const AddWidgetModal = props => (
   <Modal basic open={props.showAddWidgetModal} onClose={props.hideAddWidgetModal}>
     <Header icon="new pied piper" content="Choose a widget" />
@@ -21,42 +17,21 @@ export const AddWidgetModal = props => (
       <p>Please pick the widget you wish to display.</p>
     </Modal.Content>
     <Modal.Actions>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(TRANSIT_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(TRANSIT_WIDGET_ID)}
-      >
-        <Icon name="rocket" size="large" />Transit
-      </Button>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(SHEETS_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(SHEETS_WIDGET_ID)}
-      >
-        <Icon name="table" size="large" />Sheets
-      </Button>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(GITHUB_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(GITHUB_WIDGET_ID)}
-      >
-        <Icon name="github" size="large" /> GitHub
-      </Button>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(SLACK_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(SLACK_WIDGET_ID)}
-      >
-        <Icon name="slack" size="large" /> Slack
-      </Button>
+      {
+        Object.values(widgetConfigs).map(cfg => (
+          <Button
+            basic
+            color="blue"
+            onClick={() => props.addWidget(cfg.type)}
+            inverted
+            disabled={props.ids.filter(id => props.metadata[id].type === cfg.type).length > 0}
+            key={cfg.type}
+          >
+            <Icon name={cfg.icon} size="large" />{cfg.displayName}
+          </Button>
+        ),
+        )
+      }
       <Button
         color="red"
         onClick={props.hideAddWidgetModal}
@@ -73,12 +48,17 @@ AddWidgetModal.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string).isRequired,
   addWidget: PropTypes.func.isRequired,
   hideAddWidgetModal: PropTypes.func.isRequired,
+  metadata: PropTypes.shape({
+    type: PropTypes.string,
+    showSidebar: PropTypes.bool,
+  }).isRequired,
 };
 
 export const mapStateToProps = (state) => {
   const showAddWidgetModal = state.widgets.showAddWidgetModal;
   const ids = state.widgets.ids;
-  return { showAddWidgetModal, ids };
+  const metadata = state.widgets.metadata;
+  return { showAddWidgetModal, ids, metadata };
 };
 
 export const mapDispatchToProps = dispatch => bindActionCreators({
