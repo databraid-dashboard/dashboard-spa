@@ -24,7 +24,6 @@ export const AddWidgetModal = props => (
             color="blue"
             onClick={() => props.addWidget(cfg.type)}
             inverted
-            // disabled={props.ids.includes(cfg.type)}
             disabled={props.ids.filter(id => props.metadata[id].type === cfg.type).length > 0}
             key={cfg.type}
           >
@@ -51,11 +50,11 @@ AddWidgetModal.propTypes = {
   hideAddWidgetModal: PropTypes.func.isRequired,
   metadata: PropTypes.shape({
     type: PropTypes.string,
-    showSidebar:  PropTypes.bool,
-  }),
+    showSidebar: PropTypes.bool,
+  }).isRequired,
 };
 
-export const mapStateToProps = state => {
+export const mapStateToProps = (state) => {
   const showAddWidgetModal = state.widgets.showAddWidgetModal;
   const ids = state.widgets.ids;
   const metadata = state.widgets.metadata;

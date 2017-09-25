@@ -53,7 +53,7 @@ exports[`AddWidgetModal component should render a component with props as specif
       as="button"
       basic={true}
       color="blue"
-      disabled={true}
+      disabled={false}
       inverted={true}
       onClick={[Function]}
     >

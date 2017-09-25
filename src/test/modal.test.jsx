@@ -6,7 +6,7 @@ import { AddWidgetModal, mapStateToProps, mapDispatchToProps } from '../componen
 const state = {
   widgets: {
     showAddWidgetModal: true,
-    ids: ['slack'],
+    ids: ['1'],
   },
 };
 
@@ -19,8 +19,9 @@ describe('AddWidgetModal component', () => {
       <AddWidgetModal
         addWidget={addWidget}
         hideAddWidgetModal={hideAddWidgetModal}
-        ids={['slack']}
+        ids={['1']}
         showAddWidgetModal={true}
+        metadata={{ 1: 'slack' }}
       />,
     );
     expect(toJson(component)).toMatchSnapshot();
@@ -29,7 +30,7 @@ describe('AddWidgetModal component', () => {
   it('maps given state to props ', () => {
     const expected = {
       showAddWidgetModal: true,
-      ids: ['slack'],
+      ids: ['1'],
     };
     expect(mapStateToProps(state)).toEqual(expected);
   });
