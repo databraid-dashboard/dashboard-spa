@@ -4,17 +4,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  TRANSIT_WIDGET_ID,
-  SLACK_WIDGET_ID,
-  GITHUB_WIDGET_ID,
-  SHEETS_WIDGET_ID,
-} from '../../constants';
-import {
   addWidget,
   hideAddWidgetModal,
 } from '../../actions';
 import widgetConfigs from '../../configurations';
 
+/* eslint-disable react/no-unused-prop-types */
 export const AddWidgetModal = props => (
   <Modal basic open={props.showAddWidgetModal} onClose={props.hideAddWidgetModal}>
     <Header icon="new pied piper" content="Choose a widget" />
@@ -37,42 +32,6 @@ export const AddWidgetModal = props => (
         ),
         )
       }
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(TRANSIT_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(TRANSIT_WIDGET_ID)}
-      >
-        <Icon name="rocket" size="large" />Transit
-      </Button>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(SHEETS_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(SHEETS_WIDGET_ID)}
-      >
-        <Icon name="table" size="large" />Sheets
-      </Button>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(GITHUB_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(GITHUB_WIDGET_ID)}
-      >
-        <Icon name="github" size="large" /> GitHub
-      </Button>
-      <Button
-        basic
-        color="blue"
-        onClick={() => props.addWidget(SLACK_WIDGET_ID)}
-        inverted
-        disabled={props.ids.includes(SLACK_WIDGET_ID)}
-      >
-        <Icon name="slack" size="large" /> Slack
-      </Button>
       <Button
         color="red"
         onClick={props.hideAddWidgetModal}
