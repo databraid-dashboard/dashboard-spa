@@ -2,7 +2,7 @@ export default [
   {
     type: 'transit',
     icon: 'rocket',
-    initHeight: 8,
+    initHeight: 10,
     initWidth: 6,
     minHeight: 4,
     minWidth: 3,
@@ -10,7 +10,7 @@ export default [
   {
     type: 'github',
     icon: 'github',
-    initHeight: 8,
+    initHeight: 12,
     initWidth: 6,
     minHeight: 4,
     minWidth: 6,
@@ -18,7 +18,7 @@ export default [
   {
     type: 'slack',
     icon: 'slack',
-    initHeight: 6,
+    initHeight: 11,
     initWidth: 4,
     minHeight: 4,
     minWidth: 3,
@@ -27,7 +27,7 @@ export default [
     type: 'sheets',
     icon: 'table',
     initHeight: 8,
-    initWidth: 8,
+    initWidth: 4,
     minHeight: 4,
     minWidth: 3,
   },
