@@ -21,7 +21,6 @@ import {
   LOCK_DASHBOARD,
   UNLOCK_DASHBOARD,
   SAVE_LAYOUT_CHANGE,
-  SHEETS_WIDGET_ID,
 } from '../constants';
 
 const initialState = {
