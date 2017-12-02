@@ -18,7 +18,6 @@
 .env.slack-api
 .env.transit-api
 .env.github-api
-.env.sheet-api
 
 npm-debug.log*
 yarn-debug.log*
