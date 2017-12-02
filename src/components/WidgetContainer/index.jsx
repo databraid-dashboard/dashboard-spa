@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 import TransitComponent from '@databraid/transit-widget/lib/App';
 import SlackComponent from '@databraid/slack-widget/lib/App';
 import GithubComponent from '@databraid/github-widget/lib/App';
-import SheetsComponent from '@databraid/sheets-widget/lib/App';
+import SheetsComponent from '@gdatabraid/sheets-widget2/lib/App';
 import {
   TRANSIT_WIDGET_ID,
   SLACK_WIDGET_ID,

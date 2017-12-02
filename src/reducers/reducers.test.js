@@ -1,7 +1,7 @@
 import { Reducer } from 'redux-testkit';
 import { transit as transitReducer } from '@databraid/transit-widget/lib/reducers';
 import { github as githubReducer } from '@databraid/github-widget/lib/reducers';
-import { sheets as sheetsReducer } from '@databraid/sheets-widget/lib/reducers';
+import { sheets as sheetsReducer } from '@gdatabraid/sheets-widget2/lib/reducers';
 import { storeReducer as slackReducer } from '@databraid/slack-widget/lib/Reducers';
 import {
   widgets as rootReducer,

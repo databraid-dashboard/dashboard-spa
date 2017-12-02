@@ -5,7 +5,7 @@ import localForage from 'localforage';
 import TRANSIT_API from '@databraid/transit-widget/lib/utils/Api';
 import GITHUB_API from '@databraid/github-widget/lib/utils/Api';
 import SLACK_API from '@databraid/slack-widget/lib/Utils/Api';
-import SHEETS_API from '@databraid/sheets-widget/lib/utils/Api';
+import SHEETS_API from '@gdatabraid/sheets-widget2/lib/utils/Api';
 import rootReducer from './reducers';
 
 /* eslint-disable no-underscore-dangle, max-len */
