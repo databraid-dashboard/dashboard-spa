@@ -27,7 +27,7 @@
 }
 
 .side-strip {
-  width: 16px;
+  width: 26px;
   height: 100%;
   float: right;
   overflow: hidden;
@@ -38,6 +38,10 @@
   cursor: pointer;
 }
 
+.side-strip> i {
+  font-size: 23px;
+  margin-top: 12px;
+}
 .side-strip:focus {
   outline: 0;
 }
