@@ -26,7 +26,7 @@ import {
 const initialState = {
   ids: [],
   byId: {},
-  showSidebar: false,
+  showSidebar: true,
   showAddWidgetModal: false,
   locked: false,
   grid: {
@@ -39,6 +39,7 @@ const initialState = {
 };
 
 export const collapseWidgetSidebars = (metadata) => {
+  console.log('collapseWidgetSidebars fired');
   const newMetadata = { ...metadata };
   Object.keys(newMetadata).forEach((widgetId) => {
     newMetadata[widgetId] = {
